@@ -1,0 +1,36 @@
+containers:
+  python:
+    setup:
+    - !Alpine v3.7
+    - !PipConfig
+      dependencies: true
+    - !Py3Install
+      - "aiohttp"
+      - "ujson"
+      - "uvloop"
+
+  ab:
+    setup:
+    - !Alpine v3.7
+    - !Install ["apache2-utils"]
+
+commands:
+  aiohttp-json: !Command
+    container: python
+    run: "python3 aiohttp.json.py"
+
+  aiohttp-json-uvloop: !Command
+    container: python
+    run: "python3 aiohttp.json.uvloop.py"
+
+  aiohttp-ujson: !Command
+    container: python
+    run: "python3 aiohttp.ujson.py"
+
+  aiohttp-ujson-uvloop: !Command
+    container: python
+    run: "python3 aiohttp.ujson.uvloop.py"
+
+  ab: !Command
+    container: ab
+    run: "ab -c 100 -n 10000 http://127.0.0.1:8080/"
